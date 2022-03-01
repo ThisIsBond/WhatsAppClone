@@ -1,0 +1,7 @@
+* Top navigation functionality dependencies * 
+
+-> @react-navigation/material-top-tabs - 107 kB
+-> react-native-tab-view - 376 kB
+-> react-native-reanimated - 21.2 MB
+-> react-native-pager-view - 148 kb 
+

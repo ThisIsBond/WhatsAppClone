@@ -32,13 +32,9 @@ export default function EditScreenInfo({ path }: { path: string }) {
       </View>
 
       <View style={styles.helpContainer}>
-        <TouchableOpacity onPress={() => {
-          console.log("Hello");
-        }} style={styles.helpLink}>
           <Text style={styles.helpLinkText} lightColor={Colors.dark.tint} darkColor={Colors.light.tint}>
             Tap here if your app doesn't automatically update after making changes
           </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
