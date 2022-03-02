@@ -3,15 +3,14 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
+import ChatScreen from '../screens/ChatScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { MainTabParamList } from '../types';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 import { Fontisto } from '@expo/vector-icons'
-import { color } from 'react-native-reanimated';
-import { View } from '../components/Themed';
+
 
 const MainTab = createMaterialTopTabNavigator<MainTabParamList>();
 const CustomTab = createMaterialTopTabNavigator<MainTabParamList>();
@@ -41,7 +40,7 @@ export default function MainTabNavigator() {
 
             <MainTab.Screen
                 name="Camera"
-                component={TabOneScreen}
+                component={TabTwoScreen}
                 options={{
                     tabBarIcon: () => <Fontisto name="camera" color={Colors[colorScheme].background} size={20}/>,
                     tabBarLabel: () => null
@@ -50,7 +49,7 @@ export default function MainTabNavigator() {
 
             <MainTab.Screen
                 name="Chats"
-                component={TabTwoScreen}
+                component={ChatScreen}
             />
             <MainTab.Screen
                 name="Status"
