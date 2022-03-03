@@ -5,3 +5,6 @@
 -> react-native-reanimated - 21.2 MB
 -> react-native-pager-view - 148 kb 
 
+* Date Parsing library *
+
+-> moment (documentation at momentjs.com) 

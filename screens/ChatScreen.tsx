@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import ChatListItem from '../components/ChatListItem';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -10,7 +10,12 @@ import ChatRooms from '../data/ChatRooms';
 export default function ChatScreen() {
   return (
     <View style={styles.container}>
-       <ChatListItem chatRoom={ChatRooms[0]} />
+      <FlatList
+        style={{ width: '100%' }} // In order to display flat list correctly
+        data={ChatRooms}
+        renderItem={({ item }) => <ChatListItem chatRoom={item} />}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
