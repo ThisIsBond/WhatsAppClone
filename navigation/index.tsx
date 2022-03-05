@@ -8,19 +8,27 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, StyleSheet } from 'react-native';
-import { View } from '../components/Themed';
 
+import useColorScheme from '../hooks/useColorScheme';
+import { Text, View, Image } from 'react-native';
 import Colors from '../constants/Colors';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
 
 import { RootStackParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 // Icons 
-import {Octicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons, MaterialCommunityIcons, AntDesign, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 //TopTabNavigation
 import MainTabNavigator from './MainTabNavigator'
+import styles from '../components/ChatListItem/styles';
+
+// Hooks
+import { useNavigation } from '@react-navigation/native';
+
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -38,12 +46,18 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
+
 function RootNavigator() {
+
+  const navigation = useNavigation();
+  const colorScheme = useColorScheme();
+
   return (
     <Stack.Navigator screenOptions={{
       headerShown: true,
       headerStyle: {
-        backgroundColor: Colors.light.tint,
+        backgroundColor: Colors.lightDark.tint,
       },
       headerTintColor: Colors.light.background,
       headerTitleStyle: {
@@ -60,10 +74,10 @@ function RootNavigator() {
           headerRight: () => (
             <View
               style={{
-                width:60,
-                backgroundColor:'transparent',
-                flexDirection:'row',
-                justifyContent:'space-between', // provide space between two icons
+                width: 60,
+                backgroundColor: 'transparent',
+                flexDirection: 'row',
+                justifyContent: 'space-between', // provide space between two icons
                 marginRight: 1
               }}
             >
@@ -72,6 +86,55 @@ function RootNavigator() {
             </View>
           )
         }} />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoomScreen}
+        // options={({ route }) => ({
+        //   // In order to achieve this we need to specify props in useNavigation hook form ChatListItem/index.tsx component.
+        //   title: route.params.name, // Displaying custom title withe the help of params (Using params in the title)
+        // })}
+
+        options={({ route }) => ({
+          // Below snippet will show the header profile picture inside selected chatroom
+          headerLeft: () => {
+            return (
+              <>
+                <View
+                  style={{
+                    flexDirection: 'row'
+                  }}
+                >
+                  <AntDesign style={{
+                    padding: '1.75%'
+                  }} name="arrowleft" size={24} color={Colors[colorScheme].tint} onPress={() => {
+                    console.log();
+                    navigation.goBack()
+                  }} />
+                  <Image source={require('../data/money.jpg')} style={styles.chatAvatar} />
+                </View>
+              </>
+            )
+          },
+          // In order to achieve this we need to specify props in useNavigation hook form ChatListItem/index.tsx component.
+          title: route.params.name, // Displaying custom title withe the help of params (Using params in the title
+          headerRight: () => (
+            <View
+              style={{
+                width: 100,
+                backgroundColor: 'transparent',
+                flexDirection: 'row',
+                justifyContent: 'space-between', // provide space between two icons
+                marginRight: 5
+              }}>
+              <MaterialIcons name='call' size={20} color={Colors[colorScheme].tint} />
+              <FontAwesome5 name="video" size={20} color={Colors[colorScheme].tint} />
+              <MaterialCommunityIcons name='dots-vertical' size={20} color={Colors[colorScheme].tint} />
+            </View>
+          )
+        })}
+
+
+      />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />

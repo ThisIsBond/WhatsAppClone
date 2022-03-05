@@ -10,6 +10,7 @@ import { MainTabParamList } from '../types';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 import { Fontisto } from '@expo/vector-icons'
+import { ScreenStackHeaderLeftView } from 'react-native-screens';
 
 
 const MainTab = createMaterialTopTabNavigator<MainTabParamList>();
@@ -20,11 +21,16 @@ export default function MainTabNavigator() {
 
     return (
         <MainTab.Navigator
+            backBehavior= 'initialRoute' // back button from any tab redirect to the initial route which is defined below.
             initialRouteName="Chats"
             screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme].background,
+                tabBarItemStyle: {
+                    flex:1,
+                    justifyContent:'center',
+                },
+                tabBarActiveTintColor: Colors[colorScheme].tint,
                 tabBarStyle: {
-                    backgroundColor: Colors[colorScheme].tint
+                    backgroundColor:  Colors.lightDark.tint
                 },
                 // The indicator line which shows selected tab
                 tabBarIndicatorStyle: {
@@ -41,8 +47,10 @@ export default function MainTabNavigator() {
             <MainTab.Screen
                 name="Camera"
                 component={TabTwoScreen}
+        
                 options={{
-                    tabBarIcon: () => <Fontisto name="camera" color={Colors[colorScheme].background} size={20}/>,
+                    
+                    tabBarIcon: () => <Fontisto style={{}} name="camera" color={Colors[colorScheme].tint} size={20}/>,
                     tabBarLabel: () => null
                 }}
             />

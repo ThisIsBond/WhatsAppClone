@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import Colors from '../../constants/Colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,6 +17,12 @@ const styles = StyleSheet.create({
     avatar: {
         width: 56,
         height: 56,
+        marginRight: 10,
+        borderRadius: 50 // makes image round
+    },
+    chatAvatar: {
+        width: 40,
+        height: 40,
         marginRight: 10,
         borderRadius: 50 // makes image round
     },
