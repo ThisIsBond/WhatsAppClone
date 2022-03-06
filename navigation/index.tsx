@@ -21,6 +21,9 @@ import LinkingConfiguration from './LinkingConfiguration';
 // Icons 
 import { Octicons, MaterialCommunityIcons, AntDesign, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+// Images
+import money from '../assets/images/money.jpg'
+
 //TopTabNavigation
 import MainTabNavigator from './MainTabNavigator'
 import styles from '../components/ChatListItem/styles';
@@ -110,7 +113,7 @@ function RootNavigator() {
                     console.log();
                     navigation.goBack()
                   }} />
-                  <Image source={require('../data/money.jpg')} style={styles.chatAvatar} />
+                  <Image source={money} style={styles.chatAvatar} />
                 </View>
               </>
             )

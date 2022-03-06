@@ -7,6 +7,9 @@ import { useNavigation } from "@react-navigation/native";
 import useColorScheme from '../../hooks/useColorScheme';
 import Colors from "../../constants/Colors";
 
+// Images
+import money from '../../assets/images/money.jpg'
+
 
 export type ChatListItemProps = {
     chatRoom: ChatRoom;
@@ -38,7 +41,7 @@ const ChatListItem = (props: ChatListItemProps) => {
             <View style={styles.container}>
 
                 <View style={styles.leftContainer}>
-                    <Image source={require('../../data/money.jpg')} style={styles.avatar} />
+                    <Image source={money} style={styles.avatar} />
 
                     <View style={styles.midContainer}>
                         <Text style={{ color: Colors[colorScheme].text ,...styles.username}}> {user.name} </Text>
