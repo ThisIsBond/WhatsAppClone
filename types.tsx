@@ -14,9 +14,14 @@ declare global {
 }
 
 export type RootStackParamList = {
+
+  // All navigation index.tsx screen name should need to be specified in this in order to remove typescript error.
+
   Root: NavigatorScreenParams<MainTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  Contacts: undefined;
+  ChatRoom : undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -40,6 +45,7 @@ export type User = {
   id: String;
   name: String;
   imageUri: String;
+  status: String;
 }
 
 export type Message = {
