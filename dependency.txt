@@ -7,4 +7,8 @@
 
 * Date Parsing library *
 
+-> aws-amplify 
+-> aws-amplify-react-native @react-native-community/netinfo @react-native-async-storage/async-storage @react-native-picker/picker (AWS Amplify dependencies)
+-> @aws-amplify/analytics @aws-amplify/interactions @aws-amplify/storage @aws-amplify/ui @aws-amplify/xr aws-amplify 
+
 -> moment (documentation at momentjs.com) 
