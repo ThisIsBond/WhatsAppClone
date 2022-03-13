@@ -8,10 +8,17 @@ import Navigation from './navigation';
 //Amplify 
 
 import Amplify from 'aws-amplify'
-import awsconfig from './src/aws-exports'
-Amplify.configure(awsconfig)
+import config from './src/aws-exports'
+Amplify.configure({
+  ...config,
+  Analytics:{
+    disabled: true // Error solver => [Unhandled promise rejection: Error: No credentials, applicationId or region] 
+  }
+});
 
-export default function App() {
+import { withAuthenticator } from 'aws-amplify-react-native';
+
+function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -26,3 +33,4 @@ export default function App() {
     );
   }
 }
+export default withAuthenticator(App) // Automatically add the default login screen and wrap the whole app with compulsory login.

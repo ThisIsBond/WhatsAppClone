@@ -4,6 +4,8 @@
 -> react-native-tab-view - 376 kB
 -> react-native-reanimated - 21.2 MB
 -> react-native-pager-view - 148 kb 
+-> react-native-gesture-handler - 2.09 MB
+-> react-native-material-menu - 25 kB
 
 * Date Parsing library *
 

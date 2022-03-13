@@ -9,7 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, StyleSheet } from 'react-native';
 
-import useColorScheme from '../hooks/useColorScheme';
+
 import { Text, View, Image } from 'react-native';
 import Colors from '../constants/Colors';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -21,6 +21,9 @@ import LinkingConfiguration from './LinkingConfiguration';
 // Icons 
 import { Octicons, MaterialCommunityIcons, AntDesign, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+// Custom Theme
+import useColorScheme from '../hooks/useColorScheme';
+
 // Images
 import money from '../assets/images/money.jpg'
 
@@ -31,7 +34,11 @@ import styles from '../components/ChatListItem/styles';
 // Hooks
 import { useNavigation } from '@react-navigation/native';
 import ConatctsScreen from '../screens/ContactsScreen';
+import { Menu, MenuDivider, MenuItem } from 'react-native-material-menu';
+import { useState } from 'react';
 
+// Amplify 
+import { Auth } from 'aws-amplify';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -56,6 +63,11 @@ function RootNavigator() {
 
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
+
+  // Navigation drop down menu visibility
+  const [visible, setVisible] = useState(false);
+  const hideMenu = () => setVisible(false);
+  const showMenu = () => setVisible(true);
 
   return (
     <Stack.Navigator screenOptions={{
@@ -85,8 +97,28 @@ function RootNavigator() {
                 marginRight: 1
               }}
             >
+              {/* Search Logo */}
               <Octicons name='search' size={20} color={'white'} />
-              <MaterialCommunityIcons name="dots-vertical" size={20} color={'white'} />
+
+              {/* 3 dots dropdown menu */}
+              <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                <Menu
+                  visible={visible}
+                  anchor={<MaterialCommunityIcons name="dots-vertical" size={20} color={'white'} onPress={showMenu} />}
+                  onRequestClose={hideMenu}
+                  style={{
+                    backgroundColor: Colors[colorScheme].background
+                  }}
+                >
+                  <MenuItem disabled>{<Text style={{ color: 'grey' }}>Disable button</Text>}</MenuItem>
+                  <MenuItem onPress={() => {
+                    Auth.signOut()
+                  }}>{<Text style={{ color: Colors[colorScheme].text }}>Logout</Text>}</MenuItem>
+
+                  <MenuDivider />
+                </Menu>
+              </View>
+
             </View>
           )
         }} />

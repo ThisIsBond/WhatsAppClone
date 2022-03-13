@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
     time: {
         fontSize: 14,
         color: 'grey'
+    },
+    menuDropDown:{
+        color: 'grey'
     }
 });
 
