@@ -38,7 +38,7 @@ const ContactListItem = (props: ContactListItemProps) => {
             <View style={styles.container}>
 
                 <View style={styles.leftContainer}>
-                    <Image source={money} style={styles.avatar} />
+                    <Image source={{ uri: user.imageUri }} style={styles.avatar} />
 
                     <View style={styles.midContainer}>
                         <Text style={{ color: Colors[colorScheme].text, ...styles.username }}> {user.name} </Text>

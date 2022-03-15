@@ -46,6 +46,10 @@ function App() {
       //get Authenticated user from Auth
       const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true })
 
+      function randomImageGen() {
+        return 'https://source.unsplash.com/random/300x200?sig=' + (Math.random() * 100 + 1)
+      }
+
 
       if (userInfo) {    // if userInfo is not null. 
 
@@ -67,11 +71,10 @@ function App() {
         const newUser = {
           id: userInfo.attributes.sub,
           name: userInfo.username,
-          imageUri: 'https://source.unsplash.com/random/300×300',
+          imageUri: randomImageGen(),
           status: 'Hay, I am using WhatsUp'
         }
-        console.log(newUser);
-        
+
         //sending our newUser object to graphQL api
         await API.graphql(
           graphqlOperation(
