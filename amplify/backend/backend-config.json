@@ -24,5 +24,46 @@
         ]
       }
     }
+  },
+  "api": {
+    "whatsappclone": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authwhatsappclone940f8464"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+  },
+  "UnauthRolePolicy": {
+    "Type": "AWS::IAM::Policy",
+    "Properties": {
+      "PolicyName": "appsync-unauthrole-policy",
+      "Roles": [
+        {
+          "Ref": "unauthRoleName"
+        }
+      ],
+      "PolicyDocument": {
+        "Version": "2022-03-11",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "appsync:GraphQL"
+            ],
+            "arn:aws:appsync:us-east-1:5ekdnuqf5rf2vom2qcx5f5hruu.appsync:apis/r5r5llu6rbhp7awq4xrjlbagra/*"
+
+          }
+        ]
+      }
+    }
   }
 }

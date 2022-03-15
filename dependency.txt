@@ -6,6 +6,7 @@
 -> react-native-pager-view - 148 kb 
 -> react-native-gesture-handler - 2.09 MB
 -> react-native-material-menu - 25 kB
+-> @aws-amplify/cl - 1.42 MB
 
 * Date Parsing library *
 
