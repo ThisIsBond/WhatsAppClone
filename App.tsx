@@ -47,9 +47,9 @@ function App() {
       const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true })
 
 
-      if (userInfo) {
+      if (userInfo) {    // if userInfo is not null. 
 
-        //get the user from backend with the user id  from Auth
+        //get the user from backend with the user SUB from Auth
         const userData = await API.graphql(
           graphqlOperation(
             getUser,
