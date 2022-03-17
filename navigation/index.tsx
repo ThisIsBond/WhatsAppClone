@@ -114,7 +114,9 @@ function RootNavigator() {
                   <MenuItem onPress={() => {
                     Auth.signOut()
                   }}>{<Text style={{ color: Colors[colorScheme].text }}>Logout</Text>}</MenuItem>
-
+                  <MenuItem onPress={() => {
+                    Auth.deleteUser()
+                  }}>{<Text style={{ color: 'red' }}>Delete Account</Text>}</MenuItem>
                   <MenuDivider />
                 </Menu>
               </View>

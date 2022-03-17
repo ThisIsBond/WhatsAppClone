@@ -1,18 +1,158 @@
-# This "input" configures a global authorization rule to enable public access to
-# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
-# Below @auth rules is must be mentioned in order to solve 401 error in AppSync Database.
-type User
-  @model
-  @auth(
+#
+# Migrated version of GraphQL V1 to V2
+#
+type User @model
+ @auth(
     rules: [
       { allow: owner, operations: [create, read, update, delete] }
       { allow: private, operations: [create, read, update, delete] }
     ]
-  ) {
-  id: ID!
+  )
+ {
+  id: ID! @primaryKey
   name: String!
   imageUri: String
   status: String
+  chatRoomUser: [ChatRoomUser] @hasMany(indexName:"byUser", fields: ["id"])
 }
+
+type ChatRoomUser
+@model
+ @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: private, operations: [create, read, update, delete] }
+    ]
+  )
+{
+  id: ID! @primaryKey
+  userID: ID! @index(name: "byUser", sortKeyFields:["chatRoomID"])
+  chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields:["userID"])
+  user: User @belongsTo(fields: ["userID"])
+  chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+}
+
+type ChatRoom 
+@model
+ @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: private, operations: [create, read, update, delete] }
+    ]
+  )
+ {
+  id: ID! @primaryKey
+  chatRoomUsers: [ChatRoomUser] @hasMany(indexName:"byChatRoom", fields: ["id"])
+}
+
+
+
+
+# 
+# GraphQL V1 
+#
+# type User @model {3
+#  id: ID!
+#  name: String!
+#  imageUri: String
+#  status: String
+#  chatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
+# }
+#
+# type ChatRoomUser
+# @model
+# @key(name: "byUser", fields: ["userID", "chatRoomID"])
+# @key(name: "byChatRoom", fields: ["chatRoomID", "userID"]) {
+#  id: ID!
+#  userID: ID!
+#  chatRoomID: ID!
+#  user: User @connection(fields: ["userID"])
+#  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+# }
+#
+# type ChatRoom @model {
+#  id: ID!
+#  chatRoomUsers: [ChatRoomUser] @connection(keyName: "byChatRoom", fields: ["id"])
+# }
+
+
+
+## =========================================================== EXPLANATION ========================================================================================
+## This "input" configures a global authorization rule to enable public access to
+## all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+## input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+#
+## Below @auth rules is must be mentioned in order to solve 401 error in AppSync Database.
+# type User
+#   @model
+#   @auth(
+#     rules: [
+#      { allow: owner, operations: [create, read, update, delete] }
+#      { allow: private, operations: [create, read, update, delete] }
+#    ]
+#  ) {
+#  id: ID! @primaryKey
+#  name: String!
+#  imageUri: String
+#  status: String
+#  # After creating the  ChatRoomUser model the ChatRoomUser is linked with user but the User is not linked with the list of ChatRoomUser(for eg. Doing a query on a User 
+#  # about "In which ChatRooms the User exist" won't be possible.), For that we need to declare chatRoomUser filed (which hold ArrayList of ChatRoomUser because it has 
+#  # one-to many relationship with ChatRoomUser) and also we need to declare the connection which should use secondary key to be able to search in ChatRoom Database so 
+#  # for that reason we have declared the @key in ChatRoomUser field and specify the keyName and also we need to specify which local fields from our(User) model we need 
+#  # to link with that model(ChatRoomUser), Doing that will match userID of ChatRoomUser model with id of User model that we specified.
+#
+#  # And after doing all above we will receive information about that CharRoomUsers meaning like in which ChatRoom this User is part of(which is ArrayList of all 
+#  # ChatRoomUser and based on the ChatRoomUser we can query all the information about ChatRoom since it is also linked with it)
+#  # chatRoomUser: [ChatRoomUser] @connection(keyName:"byUser", fields: ["id"])
+#    chatRoomUser: [ChatRoomUser] @manyToMany
+# }
+#
+#  # An intermediate model for forming many-to-many relationship between User and ChatRoom
+# type ChatRoomUser 
+#  @model
+#  @auth(
+#    rules: [
+#      { allow: owner, operations: [create, read, update, delete] }
+#      { allow: private, operations: [create, read, update, delete] }
+#    ]
+#  )
+#  # First key is for connecting with User model
+#  # First key is for connecting with CharRoom model in which field are reversed. 
+#  # The Primary key or Hash key(i.e. userID) from which we will able to Search the items from this Database(@model)
+#  # The Sort key(i.e. chatRoomID), Which helps to sort based on this key. 
+#  # key composed of (name: "keyName", fields: [PrimaryKey, SortKey])
+#  {
+#    id: ID! @primaryKey
+#    # To know which userID is in ChatRoom
+#    userID: ID! @index(name: "byUser", sortKeyFields: ["chatRoomID"])
+#    # To know in which ChatRoomID, User is connected.
+#    chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields: ["userID"])
+#    # To make Query and receive information about User from this model to User model & also to make connection between ChatRoomUser and User . 
+#    # user: User @connection(fields: ["userID"])
+#    # To make Query and receive information about ChatRoom from this model to ChatRoom & also to make connection between ChatRoomUser and ChatRoom . 
+#    # chatRoom: ChatRoom @connection(sortKeyFields: ["chatRoomID"])
+#   user: [User] @manyToMany
+#    chatRoom: [ChatRoom] @manyToMany
+#  }
+#
+#
+## Relationship between ChatRoom & User -> One user could be in multiple ChatRoom(i.e. At the moment i am with the ChatRoom 
+## with Lucas i could also be with other Users(eg. WhatsApp one-on-one Chat Functionality)) and Also a ChatRoom have multiple 
+## users(WhatsApp Group Functionality), That means that the relationship with User and ChatRoom is many-to-many, So when we have 
+## many-to-many relationship we need to add a separate model(i.e. ChatRoomUser) between them that will link as a one-to-many in both direction
+#
+# type ChatRoom 
+# @model
+#  @auth(
+#    rules: [
+#      { allow: owner, operations: [create, read, update, delete] }
+#      { allow: private, operations: [create, read, update, delete] }
+#    ]
+#  )
+#  {
+#      # All model have id.
+#      id: ID! @primaryKey
+#      #Same as user connection
+#      chatRoomUsers: [ChatRoomUser] @manyToMany
+# }
+#
